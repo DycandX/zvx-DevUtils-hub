@@ -46,10 +46,13 @@ export default function TerminalUI({
 
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Auto scroll to bottom
+  // Auto scroll output buffer to bottom without scrolling the whole webpage
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+    }
   }, [lines, isPasswordMode]);
 
   // Focus terminal input on click
@@ -89,15 +92,9 @@ export default function TerminalUI({
     const trimmedInput = inputValue.trim().toLowerCase();
     if (!trimmedInput) return;
 
-    const matches = COMMANDS.filter(cmd => cmd.startsWith(trimmedInput));
-    if (matches.length === 1) {
-      setInputValue(matches[0]);
-    } else if (matches.length > 1) {
-      setLines(prev => [
-        ...prev,
-        { type: "input", text: `> ${inputValue}` },
-        { type: "output", text: matches.join("    ") }
-      ]);
+    const matchedCmds = COMMANDS.filter((cmd) => cmd.startsWith(trimmedInput));
+    if (matchedCmds.length > 0) {
+      setInputValue(matchedCmds[0]);
     }
   };
 
@@ -279,6 +276,27 @@ export default function TerminalUI({
     }
   };
 
+  // Inline ghost suggestion matching
+  const getGhostSuggestion = () => {
+    if (isPasswordMode || !inputValue.trim()) return "";
+    const val = inputValue.trim().toLowerCase();
+    const match = COMMANDS.find((cmd) => cmd.startsWith(val));
+    if (match && match !== val) {
+      return match.slice(val.length);
+    }
+    return "";
+  };
+  const ghostText = getGhostSuggestion();
+
+  // Suggestion chips matching
+  const getAutocompleteMatches = () => {
+    if (isPasswordMode || !inputValue.trim()) return [];
+    const val = inputValue.trim().toLowerCase();
+    if (COMMANDS.includes(val)) return [];
+    return COMMANDS.filter((cmd) => cmd.startsWith(val));
+  };
+  const suggestionMatches = getAutocompleteMatches();
+
   return (
     <div 
       className="w-full glass-panel rounded-xl overflow-hidden border border-white/5 shadow-2xl flex flex-col min-h-[350px] max-h-[450px]"
@@ -298,7 +316,10 @@ export default function TerminalUI({
       </div>
 
       {/* Terminal Output Buffer */}
-      <div className="flex-1 p-4 overflow-y-auto terminal-scroll font-mono text-sm space-y-2 select-text bg-zinc-950/45">
+      <div 
+        ref={scrollContainerRef}
+        className="flex-1 p-4 overflow-y-auto terminal-scroll font-mono text-sm space-y-2 select-text bg-zinc-950/45"
+      >
         {lines.map((line, idx) => {
           if (line.isHtml) {
             return <div key={idx} dangerouslySetInnerHTML={{ __html: line.text }} />;
@@ -319,19 +340,45 @@ export default function TerminalUI({
         <div ref={terminalEndRef} />
       </div>
 
+      {/* Autocomplete suggestion chips */}
+      {!isPasswordMode && suggestionMatches.length > 0 && (
+        <div className="px-4 py-1.5 bg-zinc-950/60 border-t border-white/5 flex flex-wrap items-center gap-1.5 font-mono text-xs select-none">
+          <span className="text-zinc-500 mr-1">Suggestions:</span>
+          {suggestionMatches.map((match) => (
+            <button
+              key={match}
+              onClick={() => {
+                setInputValue(match);
+                inputRef.current?.focus();
+              }}
+              className="px-2 py-0.5 rounded bg-zinc-900 border border-white/5 text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/30 transition-all text-[10px] cursor-pointer animate-fade-in"
+            >
+              {match}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Terminal Command Input Field */}
       <div className="px-4 py-3 bg-zinc-950/80 border-t border-white/5 flex items-center gap-2">
         <span className="font-mono text-sm text-emerald-400 font-bold select-none">
           {isPasswordMode ? "Password: " : ">"}
         </span>
         <div className="flex-1 relative flex items-center">
+          {/* Ghost Suggestion Overlay */}
+          {ghostText && (
+            <div className="absolute left-0 top-0 text-zinc-600 font-mono text-sm pointer-events-none select-none whitespace-pre flex items-center">
+              <span className="opacity-0">{inputValue}</span>
+              <span>{ghostText}</span>
+            </div>
+          )}
           <input
             ref={inputRef}
             type={isPasswordMode ? "password" : "text"}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full bg-transparent border-none outline-none font-mono text-sm text-zinc-100 caret-emerald-400 focus:ring-0 focus:outline-none p-0 select-text"
+            className="w-full bg-transparent border-none outline-none font-mono text-sm text-zinc-100 caret-emerald-400 focus:ring-0 focus:outline-none p-0 select-text relative z-10"
             placeholder={isPasswordMode ? "••••••••" : "type a command (e.g. 'help', 'neofetch')..."}
             autoFocus
             autoComplete="off"
