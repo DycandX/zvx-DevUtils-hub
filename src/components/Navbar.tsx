@@ -23,22 +23,13 @@ const GithubIcon = ({ size = 18 }: { size?: number }) => (
 
 export default function Navbar({ isAdmin, onAdminLogout }: { isAdmin: boolean; onAdminLogout: () => void }) {
   const [scrolled, setScrolled] = useState(false);
-  const [pulseState, setPulseState] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
-    
-    const interval = setInterval(() => {
-      setPulseState(prev => !prev);
-    }, 1500);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearInterval(interval);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (id: string) => {
@@ -77,14 +68,6 @@ export default function Navbar({ isAdmin, onAdminLogout }: { isAdmin: boolean; o
           >
             &gt; dev_utils
           </button>
-          <a
-            href="https://zulvikar.is-a.dev"
-            target="_blank"
-            rel="noreferrer"
-            className="text-zinc-400 hover:text-emerald-400 transition-colors"
-          >
-            &gt; portfolio
-          </a>
           <Link 
             href="/privacy" 
             className="text-zinc-400 hover:text-emerald-400 transition-colors cursor-pointer"
@@ -93,28 +76,16 @@ export default function Navbar({ isAdmin, onAdminLogout }: { isAdmin: boolean; o
           </Link>
         </div>
 
-        {/* Creator Credit */}
-        <div className="hidden md:block">
+        {/* Actions */}
+        <div className="flex items-center gap-4">
           <a
             href="https://zulvikar.is-a.dev"
             target="_blank"
             rel="noreferrer"
-            className="text-[10px] font-mono text-zinc-600 hover:text-emerald-400 transition-colors"
+            className="hidden md:inline text-[10px] font-mono text-zinc-600 hover:text-emerald-400 transition-colors"
           >
             dev by zulvikar.is-a.dev
           </a>
-        </div>
-
-        {/* Operational Status & Actions */}
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-white/5 text-xs font-mono">
-            <span className={`h-2.5 w-2.5 rounded-full transition-all duration-500 ${
-              pulseState ? "bg-emerald-500 shadow-[0_0_8px_#10b981]" : "bg-emerald-600"
-            }`} />
-            <span className="text-zinc-400 hidden sm:inline">System:</span>
-            <span className="text-emerald-400 font-semibold uppercase tracking-wider">Operational</span>
-          </div>
-
           <a 
             href="https://github.com/DycandX" 
             target="_blank" 
