@@ -16,7 +16,6 @@ const COMMANDS = [
   "neofetch",
   "clear",
   "date",
-  "projects",
   "github",
   "markdown",
   "html",
@@ -30,18 +29,14 @@ const COMMANDS = [
   "timestamp",
 ];
 
-const WELCOME_LINES: TerminalLine[] = [
-  { type: "info", text: "ZVX Technical Command Shell v1.0.0" },
-  { type: "info", text: "Type 'help' to see all available commands. Press [Tab] to autocomplete." },
-  { type: "info", text: "---" }
-];
+const NEOFETCH_LINE: TerminalLine = { type: "output", component: <NeofetchBanner /> };
 
 export default function TerminalUI({
   onAdminLogin
 }: {
   onAdminLogin: () => void;
 }) {
-  const [lines, setLines] = useState<TerminalLine[]>(WELCOME_LINES);
+  const [lines, setLines] = useState<TerminalLine[]>([NEOFETCH_LINE]);
   const [inputValue, setInputValue] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -130,10 +125,9 @@ export default function TerminalUI({
         setLines(prev => [
           ...prev,
           { type: "output", text: "Available Commands:" },
-          { type: "output", text: "  neofetch    - Show system details and avatar info" },
-          { type: "output", text: "  projects    - List active development ecosystem projects" },
-          { type: "output", text: "  github      - Open Zulvikar's GitHub profile in a new tab" },
-          { type: "output", text: "  clear       - Clear the screen buffer" },
+          { type: "output", text: "  neofetch    - Show system details" },
+          { type: "output", text: "  github      - Open GitHub profile in a new tab" },
+          { type: "output", text: "  clear       - Clear screen buffer" },
           { type: "output", text: "  date        - Display current UTC and local timestamps" },
           { type: "output", text: "  " },
           { type: "output", text: "Workspace Tool Shortcuts (Opens & Switches Tab):" },
@@ -142,7 +136,7 @@ export default function TerminalUI({
         break;
 
       case "clear":
-        setLines([]);
+        setLines([NEOFETCH_LINE]);
         break;
 
       case "date":
@@ -157,17 +151,6 @@ export default function TerminalUI({
         setLines(prev => [
           ...prev,
           { type: "output", component: <NeofetchBanner /> }
-        ]);
-        break;
-
-      case "projects":
-        setLines(prev => [
-          ...prev,
-          { type: "output", text: "Active Ecosystem Repositories:" },
-          { type: "output", text: "  [Online] Synapse-CS   - Web Terminal Admin & Controller -> github.com/DycandX/synapse-cs" },
-          { type: "output", text: "  [Online] GeekPort CV  - Terminal portfolio website -> github.com/DycandX/zk-shell-cv" },
-          { type: "output", text: "  [Online] ZVX Dev Hub  - Dynamic client utility dashboard -> github.com/DycandX/zvx-hub" },
-          { type: "info", text: "Use dev_utils tool shortcuts to activate specific workspace modules." }
         ]);
         break;
 

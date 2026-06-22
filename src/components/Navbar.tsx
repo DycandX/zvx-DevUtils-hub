@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Terminal, Shield } from "lucide-react";
 
@@ -23,24 +23,31 @@ const GithubIcon = ({ size = 18 }: { size?: number }) => (
 
 export default function Navbar({ isAdmin, onAdminLogout }: { isAdmin: boolean; onAdminLogout: () => void }) {
   const [scrolled, setScrolled] = useState(false);
+  const ticking = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      if (!ticking.current) {
+        requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 20);
+          ticking.current = false;
+        });
+        ticking.current = true;
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
   return (
-    <nav className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+    <nav className={`sticky top-0 z-50 w-full transition-[background,border,box-shadow] duration-300 ${
       scrolled ? "bg-zinc-950/80 backdrop-blur-md border-b border-white/5 py-3 shadow-lg" : "bg-transparent py-5"
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
