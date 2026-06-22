@@ -207,7 +207,7 @@ export default function DevUtils({ standalone }: { standalone?: boolean } = {}) 
       )}
 
       {/* macOS Window App Container */}
-      <div className={`w-full rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row bg-zinc-950/65 backdrop-blur-md text-zinc-300 font-sans min-h-0 ${
+      <div className={`w-full rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row bg-zinc-950/75 text-zinc-300 font-sans min-h-0 ${
         standalone ? "flex-1" : "h-[700px]"
       }`}>
         {/* Left Sidebar */}

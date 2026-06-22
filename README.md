@@ -2,7 +2,7 @@
 
 Client-side developer swiss-army knife. 40 browser-based utilities — formatters, validators, encoders, decoders, generators, and converters. All processing stays in your browser; no data leaves your device.
 
-**[zvx.is-a.dev](https://zvx.is-a.dev)** — Deployed on Vercel Edge.
+**[zvx-devutils-hub.vercel.app](https://zvx-devutils-hub.vercel.app/)** — Deployed on Vercel Edge.
 
 ## Features
 
@@ -14,14 +14,14 @@ Client-side developer swiss-army knife. 40 browser-based utilities — formatter
 
 ## Stack
 
-| Layer | Choice |
-|---|---|
+| Layer     | Choice                  |
+| --------- | ----------------------- |
 | Framework | Next.js 16 (App Router) |
-| Language | TypeScript 5 |
-| Styling | Tailwind CSS v4 |
-| Icons | Lucide React |
-| Fonts | Geist (Sans + Mono) |
-| Hosting | Vercel Edge |
+| Language  | TypeScript 5            |
+| Styling   | Tailwind CSS v4         |
+| Icons     | Lucide React            |
+| Fonts     | Geist (Sans + Mono)     |
+| Hosting   | Vercel Edge             |
 
 ## Getting Started
 
@@ -55,30 +55,30 @@ src/
 
 ## Tool Index
 
-| Tool | Route |
-|---|---|
-| Markdown Preview | `/tool/markdown` |
-| HTML Preview | `/tool/html` |
-| JSON Formatter | `/tool/json` |
-| JWT Decoder | `/tool/jwt` |
-| Timestamp Converter | `/tool/timestamp` |
-| UUID Generator | `/tool/uuid` |
-| Base64 / URL | `/tool/base64` |
-| Hash Generator | `/tool/hash` |
-| Diff Checker | `/tool/diff` |
-| Number Base Converter | `/tool/number-base` |
-| Cron Job Parser | `/tool/cron-parser` |
-| YAML ↔ JSON | `/tool/yaml-json` |
-| YAML Formatter | `/tool/yaml-formatter` |
-| SQL Formatter | `/tool/sql-formatter` |
-| CSS Minify/Beautify | `/tool/css-minify-beautify` |
-| JS Minify/Beautify | `/tool/js-minify-beautify` |
-| HTML Minify/Beautify | `/tool/html-minify-beautify` |
-| cURL to Code | `/tool/curl-code` |
-| Certificate Decoder | `/tool/cert-decoder` |
-| Certificate Generator | `/tool/cert-generator` |
-| K8s Secret Decoder | `/tool/k8s-secret-decoder` |
-| And 20 more… | Browse the sidebar |
+| Tool                  | Route                        |
+| --------------------- | ---------------------------- |
+| Markdown Preview      | `/tool/markdown`             |
+| HTML Preview          | `/tool/html`                 |
+| JSON Formatter        | `/tool/json`                 |
+| JWT Decoder           | `/tool/jwt`                  |
+| Timestamp Converter   | `/tool/timestamp`            |
+| UUID Generator        | `/tool/uuid`                 |
+| Base64 / URL          | `/tool/base64`               |
+| Hash Generator        | `/tool/hash`                 |
+| Diff Checker          | `/tool/diff`                 |
+| Number Base Converter | `/tool/number-base`          |
+| Cron Job Parser       | `/tool/cron-parser`          |
+| YAML ↔ JSON           | `/tool/yaml-json`            |
+| YAML Formatter        | `/tool/yaml-formatter`       |
+| SQL Formatter         | `/tool/sql-formatter`        |
+| CSS Minify/Beautify   | `/tool/css-minify-beautify`  |
+| JS Minify/Beautify    | `/tool/js-minify-beautify`   |
+| HTML Minify/Beautify  | `/tool/html-minify-beautify` |
+| cURL to Code          | `/tool/curl-code`            |
+| Certificate Decoder   | `/tool/cert-decoder`         |
+| Certificate Generator | `/tool/cert-generator`       |
+| K8s Secret Decoder    | `/tool/k8s-secret-decoder`   |
+| And 20 more…          | Browse the sidebar           |
 
 ## Security
 

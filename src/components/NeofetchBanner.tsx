@@ -7,7 +7,7 @@ const INFO_LINES = [
   "zvx@zvx-hub",
   "-----------",
   "OS:        Next.js 16 (App Router)",
-  "Host:      zvx.is-a.dev (Production)",
+  "Host:      zvx.devutils (Production)",
   "Kernel:    React 19 / Tailwind v4",
   "Uptime:    99.98% (Operational)",
   "Shell:     zvx-shell 1.0.0",
