@@ -1,10 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#10b981"/>
       <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="#09090b"/>
-  <text x="32" y="42" font-family="monospace" font-size="36" font-weight="900" fill="url(#g)" text-anchor="middle" dominant-baseline="middle">Z</text>
+  <rect width="64" height="64" rx="14" fill="url(#bg)" stroke="url(#accent)" stroke-width="2"/>
+  <text x="32" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="800" fill="url(#accent)" text-anchor="middle" dominant-baseline="middle">Z</text>
+  <rect x="38" y="28" width="3" height="16" rx="1.5" fill="url(#accent)" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1.2s" repeatCount="indefinite"/>
+  </rect>
 </svg>
