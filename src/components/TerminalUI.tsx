@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Terminal, CornerDownLeft } from "lucide-react";
-import { NEOFETCH } from "./htmlarts";
+import NeofetchBanner from "./NeofetchBanner";
 
 interface TerminalLine {
   type: "input" | "output" | "error" | "success" | "info";
-  text: string;
+  text?: string;
+  component?: React.ReactNode;
   isHtml?: boolean;
 }
 
@@ -155,7 +156,7 @@ export default function TerminalUI({
       case "neofetch":
         setLines(prev => [
           ...prev,
-          { type: "output", text: NEOFETCH }
+          { type: "output", component: <NeofetchBanner /> }
         ]);
         break;
 
@@ -293,8 +294,11 @@ export default function TerminalUI({
         className="flex-1 p-4 overflow-y-auto terminal-scroll font-mono text-sm sm:text-base space-y-2 select-text bg-zinc-950/45"
       >
         {lines.map((line, idx) => {
+          if (line.component) {
+            return <div key={idx}>{line.component}</div>;
+          }
           if (line.isHtml) {
-            return <div key={idx} dangerouslySetInnerHTML={{ __html: line.text }} />;
+            return <div key={idx} dangerouslySetInnerHTML={{ __html: line.text || "" }} />;
           }
 
           let colorClass = "text-zinc-300";
@@ -305,7 +309,7 @@ export default function TerminalUI({
 
           return (
             <div key={idx} className={`${colorClass} whitespace-pre-wrap break-all`}>
-              {line.text}
+              {line.text || ""}
             </div>
           );
         })}
