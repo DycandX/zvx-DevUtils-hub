@@ -24,19 +24,19 @@ body {
   min-height: 100vh;
 }
 
-/* Background Grid Pattern */
+/* Background Grid Pattern — SVG mask, no repaint on scroll */
 .bg-dot-grid {
-  background-size: 24px 24px;
-  background-image: radial-gradient(circle, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='rgba(16,185,129,0.05)'/%3E%3C/svg%3E");
 }
 
-/* Glassmorphism Panels */
+/* Glassmorphism Panels — use transform for GPU compositing */
 .glass-panel {
   background: rgba(17, 24, 39, 0.45);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .glass-panel:hover {

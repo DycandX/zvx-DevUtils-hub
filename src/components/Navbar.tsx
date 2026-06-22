@@ -39,6 +39,12 @@ export default function Navbar({ isAdmin, onAdminLogout }: { isAdmin: boolean; o
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Force navbar onto its own GPU layer so text/hover don't repaint
+  useEffect(() => {
+    const nav = document.querySelector("nav");
+    if (nav) nav.style.transform = "translateZ(0)";
+  }, []);
+
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -47,8 +53,8 @@ export default function Navbar({ isAdmin, onAdminLogout }: { isAdmin: boolean; o
   };
 
   return (
-    <nav className={`sticky top-0 z-50 w-full transition-[background,border,box-shadow] duration-300 ${
-      scrolled ? "bg-zinc-950/80 backdrop-blur-md border-b border-white/5 py-3 shadow-lg" : "bg-transparent py-5"
+    <nav className={`sticky top-0 z-50 w-full transition-[background,border,box-shadow] duration-200 will-change-transform ${
+      scrolled ? "bg-zinc-950/80 backdrop-blur-md border-b border-white/5 py-3 shadow-lg" : "bg-transparent py-3"
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo */}
