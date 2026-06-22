@@ -15,6 +15,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "ZVX Hub — Developer Swiss Army Knife",
   description: "40+ client-side developer utilities: formatters, validators, encoders, decoders, generators. All processing stays in your browser. Zero data leaves your device.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+  },
 };
 
 export default function RootLayout({
