@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Layers, Check, Copy } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 
 interface Base64TransmuterProps {
   base64Input: string;
@@ -11,7 +11,6 @@ interface Base64TransmuterProps {
 /**
  * Base64Transmuter Component
  * Encodes and decodes standard Base64 string formats and URI components.
- * Performed entirely client-side using native window APIs (btoa, atob, encodeURIComponent, decodeURIComponent).
  */
 export default function Base64Transmuter({
   base64Input,
@@ -27,6 +26,16 @@ export default function Base64Transmuter({
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  // Clipboard paste
+  const handlePasteFromClipboard = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) setBase64Input(text);
+    } catch {
+      console.error("Failed to read clipboard");
+    }
   };
 
   // Derived state: calculate encoded/decoded output dynamically on render
@@ -52,77 +61,64 @@ export default function Base64Transmuter({
   const base64Output = getBase64Output();
 
   return (
-    <div id="tool-base64" className="glass-panel p-6 rounded-xl space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
-        <div className="flex items-center gap-2">
-          <Layers size={18} className="text-emerald-400" />
-          <h3 className="font-mono font-bold text-base text-zinc-100">Base64 / URL Transmuter</h3>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[500px]">
+      {/* Input panel (Left) */}
+      <div className="flex flex-col h-full bg-zinc-950/40 border border-white/5 rounded-lg overflow-hidden">
+        {/* Toolbar */}
+        <div className="px-3 py-2 bg-zinc-900/80 border-b border-white/5 flex items-center gap-2 text-xs font-mono select-none">
+          <span className="text-zinc-500 mr-auto font-bold uppercase tracking-wider text-[10px]">Input String</span>
+          <button
+            onClick={handlePasteFromClipboard}
+            className="px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-zinc-300 hover:text-zinc-100 transition-all cursor-pointer font-semibold"
+          >
+            Clipboard
+          </button>
+          <button
+            onClick={() => setBase64Input("")}
+            className="px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 transition-all cursor-pointer font-semibold"
+          >
+            Clear
+          </button>
         </div>
-        <span className="text-xs text-zinc-500 font-mono">Encode &amp; Decode Strings</span>
+        {/* Code area */}
+        <textarea
+          value={base64Input}
+          onChange={(e) => setBase64Input(e.target.value)}
+          className="flex-1 bg-transparent p-4 outline-none font-mono text-sm text-zinc-200 resize-none overflow-y-auto leading-relaxed border-none focus:ring-0 focus:outline-none"
+          placeholder="Type or paste text to transmute..."
+        />
       </div>
 
-      <div className="space-y-4">
-        {/* Input area */}
-        <div>
-          <label className="block text-xs font-mono text-zinc-400 mb-1">Input Text</label>
-          <textarea
-            value={base64Input}
-            onChange={(e) => setBase64Input(e.target.value)}
-            rows={3}
-            className="w-full bg-zinc-950/70 border border-white/5 rounded-lg p-2.5 text-xs font-mono text-zinc-200 focus:border-emerald-500/50 outline-none"
-          />
-        </div>
-
-        {/* Action button toggles */}
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setBase64Action("encode")}
-            className={`px-2.5 py-1.5 rounded font-mono text-[10px] font-bold transition-colors cursor-pointer ${
-              base64Action === "encode" ? "bg-emerald-500 text-zinc-950" : "bg-zinc-800 hover:bg-zinc-700 text-zinc-300"
-            }`}
-          >
-            Base64 Encode
-          </button>
-          <button
-            onClick={() => setBase64Action("decode")}
-            className={`px-2.5 py-1.5 rounded font-mono text-[10px] font-bold transition-colors cursor-pointer ${
-              base64Action === "decode" ? "bg-emerald-500 text-zinc-950" : "bg-zinc-800 hover:bg-zinc-700 text-zinc-300"
-            }`}
-          >
-            Base64 Decode
-          </button>
-          <button
-            onClick={() => setBase64Action("urlEncode")}
-            className={`px-2.5 py-1.5 rounded font-mono text-[10px] font-bold transition-colors cursor-pointer ${
-              base64Action === "urlEncode" ? "bg-emerald-500 text-zinc-950" : "bg-zinc-800 hover:bg-zinc-700 text-zinc-300"
-            }`}
-          >
-            URL Encode
-          </button>
-          <button
-            onClick={() => setBase64Action("urlDecode")}
-            className={`px-2.5 py-1.5 rounded font-mono text-[10px] font-bold transition-colors cursor-pointer ${
-              base64Action === "urlDecode" ? "bg-emerald-500 text-zinc-950" : "bg-zinc-800 hover:bg-zinc-700 text-zinc-300"
-            }`}
-          >
-            URL Decode
-          </button>
-        </div>
-
-        {/* Output pane */}
-        <div className="relative group">
-          <pre className="w-full bg-zinc-950/80 border border-white/5 rounded-lg p-3 text-xs font-mono text-zinc-300 overflow-auto max-h-[100px] terminal-scroll break-all leading-normal">
-            {base64Output}
-          </pre>
+      {/* Output panel (Right) */}
+      <div className="flex flex-col h-full bg-zinc-950/40 border border-white/5 rounded-lg overflow-hidden">
+        {/* Toolbar */}
+        <div className="px-3 py-2 bg-zinc-900/80 border-b border-white/5 flex items-center gap-2 text-xs font-mono select-none">
+          <span className="text-zinc-500 mr-auto font-bold uppercase tracking-wider text-[10px]">Output Preview</span>
           {base64Output && (
             <button
               onClick={() => handleCopy(base64Output)}
-              className="absolute top-2 right-2 p-1.5 bg-zinc-900 border border-white/5 rounded-md text-zinc-400 hover:text-zinc-100 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+              className="px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-zinc-300 hover:text-zinc-100 transition-all cursor-pointer flex items-center gap-1 font-semibold"
             >
-              {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+              {copied ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
+              <span>Copy</span>
             </button>
           )}
+          <select
+            value={base64Action}
+            onChange={(e) => setBase64Action(e.target.value as "encode" | "decode" | "urlEncode" | "urlDecode")}
+            className="bg-zinc-800 border border-white/5 text-zinc-300 rounded px-2 py-1 text-xs outline-none focus:border-emerald-500/30 cursor-pointer font-semibold"
+          >
+            <option value="encode">Base64 Encode</option>
+            <option value="decode">Base64 Decode</option>
+            <option value="urlEncode">URL Encode</option>
+            <option value="urlDecode">URL Decode</option>
+          </select>
+        </div>
+        {/* View area */}
+        <div className="flex-1 p-4 overflow-y-auto leading-relaxed select-text bg-zinc-950/25">
+          <pre className="font-mono text-sm text-cyan-400 whitespace-pre-wrap break-all leading-loose">
+            {base64Output || <span className="text-zinc-600 italic">No output yet.</span>}
+          </pre>
         </div>
       </div>
     </div>

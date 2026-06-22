@@ -71,12 +71,6 @@ export default function Navbar({ isAdmin, onAdminLogout }: { isAdmin: boolean; o
             &gt; terminal
           </button>
           <button 
-            onClick={() => scrollToSection("telemetry")} 
-            className="text-zinc-400 hover:text-emerald-400 transition-colors cursor-pointer"
-          >
-            &gt; telemetry
-          </button>
-          <button 
             onClick={() => scrollToSection("utils")} 
             className="text-zinc-400 hover:text-emerald-400 transition-colors cursor-pointer"
           >

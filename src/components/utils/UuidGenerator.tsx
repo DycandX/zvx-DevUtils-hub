@@ -1,16 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { Clipboard, Check, Copy, RefreshCw } from "lucide-react";
+import { Check, Copy, RefreshCw } from "lucide-react";
 
 /**
  * UuidGenerator Component
  * Generates RFC4122 v4 cryptographically random UUIDs client-side in batches.
- * Utilizes a lazy state initializer to avoid hydration/render loops.
  */
 export default function UuidGenerator() {
   const [uuidCount, setUuidCount] = useState(5);
   const [copied, setCopied] = useState(false);
+  const [uppercase, setUppercase] = useState(false);
+  const [hyphens, setHyphens] = useState(true);
 
   // Lazy initializer to seed initial UUIDs on mount
   const [generatedUuids, setGeneratedUuids] = useState<string[]>(() => {
@@ -34,65 +35,119 @@ export default function UuidGenerator() {
   };
 
   // Generate UUID list
-  const generateUuids = (count: number) => {
+  const generateUuids = (count: number, upCase: boolean, useHyphens: boolean) => {
     const list = [];
     for (let i = 0; i < count; i++) {
-      const uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      let uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
         const r = (Math.random() * 16) | 0;
         const v = c === "x" ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       });
+      if (!useHyphens) {
+        uuid = uuid.replace(/-/g, "");
+      }
+      if (upCase) {
+        uuid = uuid.toUpperCase();
+      }
       list.push(uuid);
     }
     setGeneratedUuids(list);
   };
 
+  const handleGenerate = () => {
+    generateUuids(uuidCount, uppercase, hyphens);
+  };
+
   return (
-    <div id="tool-uuid" className="glass-panel p-6 rounded-xl space-y-4">
-      {/* Header controls */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-3">
-        <div className="flex items-center gap-2">
-          <Clipboard size={18} className="text-emerald-400" />
-          <h3 className="font-mono font-bold text-base text-zinc-100">UUID v4 Generator</h3>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[500px]">
+      {/* Configuration Panel (Left) */}
+      <div className="flex flex-col h-full bg-zinc-950/40 border border-white/5 rounded-lg overflow-hidden">
+        {/* Toolbar */}
+        <div className="px-3 py-2 bg-zinc-900/80 border-b border-white/5 flex items-center gap-2 text-xs font-mono select-none">
+          <span className="text-zinc-500 mr-auto font-bold uppercase tracking-wider text-[10px]">Configuration</span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-zinc-500 font-mono">Batch Size:</span>
-          <select
-            value={uuidCount}
-            onChange={(e) => {
-              const count = Number(e.target.value);
-              setUuidCount(count);
-              generateUuids(count);
-            }}
-            className="bg-zinc-950 border border-white/5 rounded text-xs font-mono text-zinc-300 px-1 py-0.5 outline-none focus:border-emerald-500/50"
+        {/* Content */}
+        <div className="flex-1 p-6 space-y-6 overflow-y-auto">
+          <div className="space-y-2">
+            <label className="block text-sm font-semibold text-zinc-300 font-mono">Batch Count</label>
+            <select
+              value={uuidCount}
+              onChange={(e) => {
+                const count = Number(e.target.value);
+                setUuidCount(count);
+                generateUuids(count, uppercase, hyphens);
+              }}
+              className="w-full bg-zinc-900 border border-white/5 rounded-md px-3 py-2 text-sm font-mono text-zinc-200 outline-none focus:border-emerald-500/30 cursor-pointer"
+            >
+              <option value={1}>1 UUID</option>
+              <option value={5}>5 UUIDs</option>
+              <option value={10}>10 UUIDs</option>
+              <option value={20}>20 UUIDs</option>
+              <option value={50}>50 UUIDs</option>
+            </select>
+          </div>
+
+          <div className="space-y-3">
+            <label className="block text-sm font-semibold text-zinc-300 font-mono">Format Options</label>
+            
+            <label className="flex items-center gap-3 cursor-pointer group text-zinc-300 hover:text-zinc-100 select-none">
+              <input
+                type="checkbox"
+                checked={uppercase}
+                onChange={(e) => {
+                  const val = e.target.checked;
+                  setUppercase(val);
+                  generateUuids(uuidCount, val, hyphens);
+                }}
+                className="rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500 focus:ring-offset-0 focus:ring-opacity-25 w-4 h-4 cursor-pointer"
+              />
+              <span className="text-sm font-mono">Uppercase</span>
+            </label>
+
+            <label className="flex items-center gap-3 cursor-pointer group text-zinc-300 hover:text-zinc-100 select-none">
+              <input
+                type="checkbox"
+                checked={hyphens}
+                onChange={(e) => {
+                  const val = e.target.checked;
+                  setHyphens(val);
+                  generateUuids(uuidCount, uppercase, val);
+                }}
+                className="rounded border-zinc-700 bg-zinc-900 text-emerald-500 focus:ring-emerald-500 focus:ring-offset-0 focus:ring-opacity-25 w-4 h-4 cursor-pointer"
+              />
+              <span className="text-sm font-mono">Use Hyphens</span>
+            </label>
+          </div>
+
+          <button
+            onClick={handleGenerate}
+            className="w-full bg-emerald-500 hover:bg-emerald-600 text-zinc-950 py-2.5 rounded-lg font-mono text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer mt-8"
           >
-            <option value={1}>1</option>
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-          </select>
+            <RefreshCw size={14} />
+            <span>Generate Batches</span>
+          </button>
         </div>
       </div>
 
-      {/* Output box */}
-      <div className="space-y-3">
-        <div className="relative group">
-          <pre className="w-full bg-zinc-950/80 border border-white/5 rounded-lg p-3 text-xs font-mono text-zinc-300 overflow-auto min-h-[120px] max-h-[150px] terminal-scroll leading-relaxed">
-            {generatedUuids.join("\n")}
-          </pre>
+      {/* Output Panel (Right) */}
+      <div className="flex flex-col h-full bg-zinc-950/40 border border-white/5 rounded-lg overflow-hidden">
+        {/* Toolbar */}
+        <div className="px-3 py-2 bg-zinc-900/80 border-b border-white/5 flex items-center gap-2 text-xs font-mono select-none">
+          <span className="text-zinc-500 mr-auto font-bold uppercase tracking-wider text-[10px]">Generated UUIDs</span>
           <button
             onClick={() => handleCopy(generatedUuids.join("\n"))}
-            className="absolute top-2 right-2 p-1.5 bg-zinc-900 border border-white/5 rounded-md text-zinc-400 hover:text-zinc-100 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+            className="px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-zinc-300 hover:text-zinc-100 transition-all cursor-pointer flex items-center gap-1 font-semibold"
           >
-            {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+            {copied ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
+            <span>Copy All</span>
           </button>
         </div>
-        <button
-          onClick={() => generateUuids(uuidCount)}
-          className="w-full bg-emerald-500 hover:bg-emerald-600 text-zinc-950 py-2 rounded-lg font-mono text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer"
-        >
-          <RefreshCw size={12} />
-          <span>Generate New Batches</span>
-        </button>
+        {/* Output */}
+        <div className="flex-1 p-4 overflow-y-auto leading-relaxed select-text bg-zinc-950/25">
+          <pre className="font-mono text-sm text-cyan-400 whitespace-pre-wrap break-all leading-loose">
+            {generatedUuids.join("\n")}
+          </pre>
+        </div>
       </div>
     </div>
   );

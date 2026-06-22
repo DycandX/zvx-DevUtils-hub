@@ -108,10 +108,8 @@ export default function Home() {
           <DevUtils />
         </section>
 
-      </main>
-
-      {/* Professional Footer (Best Practice) */}
-      <footer className="w-full border-t border-white/5 bg-zinc-950/80 font-mono text-xs text-zinc-500 pt-12 pb-8 mt-12">
+      </main>      {/* Professional Footer (Best Practice) */}
+      <footer className="w-full border-t border-white/5 bg-zinc-950/80 font-mono text-sm text-zinc-500 pt-12 pb-8 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-white/5">
           {/* Column 1: Brand details */}
           <div className="space-y-3">
@@ -119,15 +117,15 @@ export default function Home() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               ZVX Technical Hub
             </span>
-            <p className="text-zinc-500 leading-relaxed text-[11px]">
+            <p className="text-zinc-500 leading-relaxed text-xs sm:text-sm">
               Consolidating mission-critical local client utilities and technical playgrounds for the developer community. No telemetry tracking, zero cookies, 100% browser-contained execution.
             </p>
           </div>
 
           {/* Column 2: Navigation & Quick Links */}
           <div className="space-y-3">
-            <span className="font-bold text-zinc-400 tracking-wider text-[11px] block uppercase">Quick Navigation</span>
-            <ul className="space-y-1.5 text-[11px]">
+            <span className="font-bold text-zinc-400 tracking-wider text-xs block uppercase">Quick Navigation</span>
+            <ul className="space-y-1.5 text-xs sm:text-sm">
               <li>
                 <a href="#terminal" className="hover:text-emerald-400 transition-colors flex items-center gap-1">
                   &gt; terminal_emulator
@@ -148,8 +146,8 @@ export default function Home() {
 
           {/* Column 3: Contact details */}
           <div className="space-y-3">
-            <span className="font-bold text-zinc-400 tracking-wider text-[11px] block uppercase">Developer Contact</span>
-            <ul className="space-y-2 text-[11px]">
+            <span className="font-bold text-zinc-400 tracking-wider text-xs block uppercase">Developer Contact</span>
+            <ul className="space-y-2 text-xs sm:text-sm">
               <li>
                 <a 
                   href="mailto:zulvikar.kharisma22@gmail.com" 
@@ -188,7 +186,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 text-[10px] text-zinc-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 text-xs text-zinc-650">
           <div>
             &copy; 2026 ZVX Hub. Built for productivity.
           </div>

@@ -16,6 +16,9 @@ const COMMANDS = [
   "date",
   "projects",
   "github",
+  "markdown",
+  "html",
+  "number-base",
   "diff",
   "json",
   "jwt",
@@ -31,16 +34,16 @@ const WELCOME_LINES: TerminalLine[] = [
   { type: "info", text: "---" }
 ];
 
-export default function TerminalUI({ 
+export default function TerminalUI({
   onAdminLogin
-}: { 
+}: {
   onAdminLogin: () => void;
 }) {
   const [lines, setLines] = useState<TerminalLine[]>(WELCOME_LINES);
   const [inputValue, setInputValue] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  
+
   // Password Mode States
   const [isPasswordMode, setIsPasswordMode] = useState(false);
 
@@ -131,8 +134,8 @@ export default function TerminalUI({
           { type: "output", text: "  clear       - Clear the screen buffer" },
           { type: "output", text: "  date        - Display current UTC and local timestamps" },
           { type: "output", text: "  " },
-          { type: "output", text: "Scroll-to-Tool Utilities:" },
-          { type: "output", text: "  diff | json | jwt | uuid | base64 | hash | timestamp" }
+          { type: "output", text: "Workspace Tool Shortcuts (Opens & Switches Tab):" },
+          { type: "output", text: "  markdown | html | number-base | diff | json | jwt | uuid | base64 | hash | timestamp" }
         ]);
         break;
 
@@ -177,7 +180,7 @@ export default function TerminalUI({
     <span class="text-emerald-400">Shell:</span> zvx-shell 1.0.0
     <span class="text-emerald-400">Resolution:</span> Responsive Design
     <span class="text-emerald-400">Memory:</span> Client-Side State Process
-    <span class="text-emerald-400">Developer:</span> Zulvikar Kharisma N. M.
+    <span class="text-emerald-400">Developer:</span> DycandX
     <span class="text-emerald-400">Focus:</span> Computer Eng. Student @ Polines
     <span class="text-emerald-400">Projects:</span> Full-Stack / Embedded IoT
   </div>
@@ -193,7 +196,7 @@ export default function TerminalUI({
           { type: "output", text: "  [Online] Synapse-CS   - Web Terminal Admin & Controller -> github.com/DycandX/synapse-cs" },
           { type: "output", text: "  [Online] GeekPort CV  - Terminal portfolio website -> github.com/DycandX/zk-shell-cv" },
           { type: "output", text: "  [Online] ZVX Dev Hub  - Dynamic client utility dashboard -> github.com/DycandX/zvx-hub" },
-          { type: "info", text: "To view telemetry logs, scroll down to the Telemetry Dashboard section." }
+          { type: "info", text: "Use dev_utils tool shortcuts to activate specific workspace modules." }
         ]);
         break;
 
@@ -206,6 +209,9 @@ export default function TerminalUI({
         break;
 
       // Scroll shortcuts
+      case "markdown":
+      case "html":
+      case "number-base":
       case "diff":
       case "json":
       case "jwt":
@@ -215,16 +221,13 @@ export default function TerminalUI({
       case "timestamp":
         setLines(prev => [
           ...prev,
-          { type: "success", text: `Scrolling directly to developer tool: ${cmd.toUpperCase()}...` }
+          { type: "success", text: `Opening developer tool: ${cmd.toUpperCase()}...` }
         ]);
+        window.dispatchEvent(new CustomEvent("select-dev-tool", { detail: cmd }));
         setTimeout(() => {
-          const el = document.getElementById(`tool-${cmd}`);
+          const el = document.getElementById("utils");
           if (el) {
-            el.scrollIntoView({ behavior: "smooth", block: "center" });
-            el.classList.add("ring-2", "ring-emerald-500", "duration-1000");
-            setTimeout(() => {
-              el.classList.remove("ring-2", "ring-emerald-500");
-            }, 2000);
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
           }
         }, 100);
         break;
@@ -246,11 +249,10 @@ export default function TerminalUI({
         const suggestion = COMMANDS.find(c => c.startsWith(cmd) || cmd.startsWith(c));
         setLines(prev => [
           ...prev,
-          { 
-            type: "error", 
-            text: `zvx-shell: Command not found: '${cmd}'. ${
-              suggestion ? `Did you mean '${suggestion}'? ` : ""
-            }Type 'help' for commands.` 
+          {
+            type: "error",
+            text: `zvx-shell: Command not found: '${cmd}'. ${suggestion ? `Did you mean '${suggestion}'? ` : ""
+              }Type 'help' for commands.`
           }
         ]);
         break;
@@ -259,7 +261,7 @@ export default function TerminalUI({
 
   const handlePasswordInput = (pwd: string) => {
     setIsPasswordMode(false);
-    
+
     // Check credentials (mocking for frontend-only view: password is 'zvx2026')
     if (pwd.trim() === "zvx2026") {
       setLines(prev => [
@@ -298,8 +300,8 @@ export default function TerminalUI({
   const suggestionMatches = getAutocompleteMatches();
 
   return (
-    <div 
-      className="w-full glass-panel rounded-xl overflow-hidden border border-white/5 shadow-2xl flex flex-col min-h-[350px] max-h-[450px]"
+    <div
+      className="w-full glass-panel rounded-xl overflow-hidden border border-white/5 shadow-2xl flex flex-col h-[420px]"
       onClick={focusInput}
     >
       {/* Terminal Title Bar */}
@@ -316,9 +318,9 @@ export default function TerminalUI({
       </div>
 
       {/* Terminal Output Buffer */}
-      <div 
+      <div
         ref={scrollContainerRef}
-        className="flex-1 p-4 overflow-y-auto terminal-scroll font-mono text-sm space-y-2 select-text bg-zinc-950/45"
+        className="flex-1 p-4 overflow-y-auto terminal-scroll font-mono text-sm sm:text-base space-y-2 select-text bg-zinc-950/45"
       >
         {lines.map((line, idx) => {
           if (line.isHtml) {
@@ -342,8 +344,8 @@ export default function TerminalUI({
 
       {/* Autocomplete suggestion chips */}
       {!isPasswordMode && suggestionMatches.length > 0 && (
-        <div className="px-4 py-1.5 bg-zinc-950/60 border-t border-white/5 flex flex-wrap items-center gap-1.5 font-mono text-xs select-none">
-          <span className="text-zinc-500 mr-1">Suggestions:</span>
+        <div className="px-4 py-2 bg-zinc-950/60 border-t border-white/5 flex flex-wrap items-center gap-1.5 font-mono text-xs sm:text-sm select-none">
+          <span className="text-zinc-500 mr-1 font-bold">Suggestions:</span>
           {suggestionMatches.map((match) => (
             <button
               key={match}
@@ -351,7 +353,7 @@ export default function TerminalUI({
                 setInputValue(match);
                 inputRef.current?.focus();
               }}
-              className="px-2 py-0.5 rounded bg-zinc-900 border border-white/5 text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/30 transition-all text-[10px] cursor-pointer animate-fade-in"
+              className="px-2.5 py-0.5 rounded bg-zinc-900 border border-white/5 text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/30 transition-all text-xs cursor-pointer animate-fade-in"
             >
               {match}
             </button>
@@ -361,13 +363,13 @@ export default function TerminalUI({
 
       {/* Terminal Command Input Field */}
       <div className="px-4 py-3 bg-zinc-950/80 border-t border-white/5 flex items-center gap-2">
-        <span className="font-mono text-sm text-emerald-400 font-bold select-none">
+        <span className="font-mono text-sm sm:text-base text-emerald-400 font-bold select-none">
           {isPasswordMode ? "Password: " : ">"}
         </span>
         <div className="flex-1 relative flex items-center">
           {/* Ghost Suggestion Overlay */}
           {ghostText && (
-            <div className="absolute left-0 top-0 text-zinc-600 font-mono text-sm pointer-events-none select-none whitespace-pre flex items-center">
+            <div className="absolute left-0 top-0 text-zinc-600 font-mono text-sm sm:text-base pointer-events-none select-none whitespace-pre flex items-center">
               <span className="opacity-0">{inputValue}</span>
               <span>{ghostText}</span>
             </div>
@@ -378,7 +380,7 @@ export default function TerminalUI({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full bg-transparent border-none outline-none font-mono text-sm text-zinc-100 caret-emerald-400 focus:ring-0 focus:outline-none p-0 select-text relative z-10"
+            className="w-full bg-transparent border-none outline-none font-mono text-sm sm:text-base text-zinc-100 caret-emerald-400 focus:ring-0 focus:outline-none p-0 select-text relative z-10"
             placeholder={isPasswordMode ? "••••••••" : "type a command (e.g. 'help', 'neofetch')..."}
             autoFocus
             autoComplete="off"
@@ -387,7 +389,7 @@ export default function TerminalUI({
             spellCheck="false"
           />
           {!inputValue && !isPasswordMode && (
-            <div className="absolute right-0 text-[10px] text-zinc-500 font-mono flex items-center gap-1 select-none pointer-events-none">
+            <div className="absolute right-0 text-[10px] sm:text-xs text-zinc-500 font-mono flex items-center gap-1 select-none pointer-events-none">
               <CornerDownLeft size={10} />
               <span>Enter to execute</span>
             </div>
