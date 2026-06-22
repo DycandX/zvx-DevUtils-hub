@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import TerminalUI from "@/components/TerminalUI";
 import DevUtils from "@/components/DevUtils";
@@ -51,7 +52,7 @@ export default function Home() {
       )}
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-16">
+      <main className="flex-1 max-w-[1400px] mx-auto w-full px-3 sm:px-4 lg:px-6 py-10 sm:py-16 space-y-16">
         
         {/* Hero Section & Overview (Dev Utilities Focus) */}
         <section className="space-y-6 max-w-4xl">
@@ -135,6 +136,11 @@ export default function Home() {
                 <a href="#utils" className="hover:text-emerald-400 transition-colors flex items-center gap-1">
                   &gt; dev_utilities_hub
                 </a>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-emerald-400 transition-colors flex items-center gap-1">
+                  &gt; privacy_policy
+                </Link>
               </li>
               <li>
                 <a href="#" className="hover:text-emerald-400 transition-colors flex items-center gap-1">

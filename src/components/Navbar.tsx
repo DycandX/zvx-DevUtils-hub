@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { Terminal, Shield } from "lucide-react";
 
 const GithubIcon = ({ size = 18 }: { size?: number }) => (
@@ -76,6 +77,20 @@ export default function Navbar({ isAdmin, onAdminLogout }: { isAdmin: boolean; o
           >
             &gt; dev_utils
           </button>
+          <a
+            href="https://zulvikar.is-a.dev"
+            target="_blank"
+            rel="noreferrer"
+            className="text-zinc-400 hover:text-emerald-400 transition-colors"
+          >
+            &gt; portfolio
+          </a>
+          <Link 
+            href="/privacy" 
+            className="text-zinc-400 hover:text-emerald-400 transition-colors cursor-pointer"
+          >
+            &gt; privacy
+          </Link>
         </div>
 
         {/* Operational Status & Actions */}

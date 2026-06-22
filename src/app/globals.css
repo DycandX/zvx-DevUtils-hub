@@ -98,3 +98,175 @@ body {
 .font-mono {
   font-family: var(--font-mono);
 }
+
+/* Dark theme overrides for workspace content */
+.workspace-content {
+  --bg-card: #1e1e2e;
+  --bg-input: #27272a;
+  --bg-hover: #2a2a3a;
+  --text-primary: #e4e4e7;
+  --text-secondary: #a1a1aa;
+  --border-muted: rgba(255,255,255,0.08);
+  --accent: #10b981;
+}
+
+.workspace-content .bg-white,
+.workspace-content .bg-gray-50,
+.workspace-content .bg-gray-100 {
+  background-color: var(--bg-card) !important;
+}
+
+.workspace-content .text-gray-900,
+.workspace-content .text-gray-800 {
+  color: #f4f4f5 !important;
+}
+
+.workspace-content .text-gray-700,
+.workspace-content .text-gray-600 {
+  color: var(--text-primary) !important;
+}
+
+.workspace-content .text-gray-500,
+.workspace-content .text-gray-400 {
+  color: var(--text-secondary) !important;
+}
+
+.workspace-content .border-gray-200,
+.workspace-content .border-gray-300 {
+  border-color: var(--border-muted) !important;
+}
+
+.workspace-content input:not([type="radio"]):not([type="checkbox"]),
+.workspace-content textarea,
+.workspace-content select {
+  background-color: var(--bg-input) !important;
+  border-color: var(--border-muted) !important;
+  color: var(--text-primary) !important;
+}
+
+.workspace-content input::placeholder,
+.workspace-content textarea::placeholder {
+  color: #52525b !important;
+}
+
+.workspace-content select option {
+  background-color: #18181b !important;
+  color: #e4e4e7 !important;
+}
+
+.workspace-content button:hover:not([class*="bg-"]) {
+  background-color: var(--bg-hover) !important;
+}
+
+.workspace-content .hover\:bg-gray-50:hover,
+.workspace-content .hover\:bg-gray-100:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+.workspace-content code,
+.workspace-content pre {
+  background-color: #18181b !important;
+  color: #e4e4e7 !important;
+  border-color: var(--border-muted) !important;
+}
+
+.workspace-content th {
+  background-color: #18181b !important;
+  color: var(--text-primary) !important;
+}
+
+.workspace-content td {
+  border-color: var(--border-muted) !important;
+  color: var(--text-primary) !important;
+}
+
+.workspace-content .divide-gray-200 > * {
+  border-color: var(--border-muted) !important;
+}
+
+.workspace-content .bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+.workspace-content .bg-green-50 {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+}
+
+.workspace-content .bg-blue-50 {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.workspace-content .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+}
+
+.workspace-content .text-red-600,
+.workspace-content .text-red-700,
+.workspace-content .text-red-800 {
+  color: #f87171 !important;
+}
+
+.workspace-content .text-green-600,
+.workspace-content .text-green-700,
+.workspace-content .text-green-800 {
+  color: #34d399 !important;
+}
+
+.workspace-content .text-blue-600,
+.workspace-content .text-blue-700,
+.workspace-content .text-blue-800,
+.workspace-content .text-blue-900 {
+  color: #60a5fa !important;
+}
+
+.workspace-content .text-amber-600,
+.workspace-content .text-amber-700,
+.workspace-content .text-amber-800 {
+  color: #fbbf24 !important;
+}
+
+.workspace-content .bg-gray-200,
+.workspace-content .bg-gray-300 {
+  background-color: #27272a !important;
+}
+
+.workspace-content .bg-gray-500 {
+  background-color: #3f3f46 !important;
+}
+
+.workspace-content .hover\:bg-gray-200:hover,
+.workspace-content .hover\:bg-gray-300:hover {
+  background-color: #2a2a3a !important;
+}
+
+.workspace-content .hover\:bg-gray-600:hover {
+  background-color: #52525b !important;
+}
+
+.workspace-content .focus\:ring-gray-500:focus {
+  --tw-ring-color: var(--accent) !important;
+}
+
+.workspace-content .file\:bg-blue-50::file-selector-button {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: var(--accent) !important;
+}
+
+.workspace-content .hover\:file\:bg-blue-100::file-selector-button:hover {
+  background-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+.workspace-content .focus\:ring-blue-500:focus {
+  --tw-ring-color: var(--accent) !important;
+}
+
+.workspace-content hr {
+  border-color: var(--border-muted) !important;
+}
+
+/* Light-themed code editor override */
+.workspace-content .w-md-editor,
+.workspace-content [data-testid="code-editor"] {
+  background-color: var(--bg-input) !important;
+  border-color: var(--border-muted) !important;
+}
