@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Terminal, CornerDownLeft } from "lucide-react";
-import { NEOFETCH_HTML } from "./htmlarts";
+import { NEOFETCH } from "./htmlarts";
 
 interface TerminalLine {
   type: "input" | "output" | "error" | "success" | "info";
@@ -155,7 +155,7 @@ export default function TerminalUI({
       case "neofetch":
         setLines(prev => [
           ...prev,
-          { type: "output", isHtml: true, text: NEOFETCH_HTML }
+          { type: "output", text: NEOFETCH }
         ]);
         break;
 
