@@ -18,7 +18,7 @@ const INFO_LINES = [
 ];
 
 const LINES = ART_LINES.map((line, i) =>
-  i < INFO_LINES.length ? line + INFO_LINES[i] : line
+  i < INFO_LINES.length ? line + INFO_LINES[i] : line,
 );
 
 export default function NeofetchBanner() {
@@ -35,15 +35,19 @@ export default function NeofetchBanner() {
         {LINES.map((line, i) => {
           const art = line.slice(0, 22);
           const info = line.slice(22);
-          const isHeader = art.startsWith("Z V X") || art.trim().startsWith("/");
-          const isSep = info.trim() === "-----------" || art.trim() === "-------------";
+          const isHeader =
+            art.startsWith("Z V X") || art.trim().startsWith("/");
 
           return (
             <div key={i} className="flex">
-              <span className={isHeader ? "text-emerald-400 font-bold" : "text-zinc-500"}>
+              <span
+                className={
+                  isHeader ? "text-emerald-400 font-bold" : "text-zinc-500"
+                }
+              >
                 {art}
               </span>
-              <span className={isSep ? "text-zinc-600" : "text-zinc-300"}>
+              <span className="text-zinc-300">
                 {info}
               </span>
             </div>
