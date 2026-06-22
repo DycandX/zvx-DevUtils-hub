@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+:root {
+  --background: #030712; /* zinc-950/gray-950 */
+  --foreground: #f3f4f6; /* gray-100 */
+  
+  --color-primary: #10b981; /* emerald-500 */
+  --color-secondary: #06b6d4; /* cyan-500 */
+  --color-accent: #8b5cf6; /* violet-500 */
+  
+  --background-card: rgba(17, 24, 39, 0.6); /* gray-900 with opacity */
+  --border-muted: rgba(75, 85, 99, 0.2); /* gray-600 with low opacity */
+  
+  --radius-component: 12px;
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Background Grid Pattern */
+.bg-dot-grid {
+  background-size: 24px 24px;
+  background-image: radial-gradient(circle, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+  background: rgba(17, 24, 39, 0.45);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+  border-color: rgba(16, 185, 129, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(16, 185, 129, 0.05);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(3, 7, 18, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.6);
+}
+
+/* Custom Utilities & Animations */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes wave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-hover-wave:hover {
+  animation: wave 0.8s ease-in-out infinite;
+}
+
+/* Shimmer load effect */
+.shimmer {
+  background: linear-gradient(90deg, rgba(31,41,55,0.4) 25%, rgba(55,65,81,0.5) 50%, rgba(31,41,55,0.4) 75%);
+  background-size: 200% 100%;
+  animation: shimmer-anim 1.5s infinite;
+}
+
+@keyframes shimmer-anim {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Typography styles */
+.font-mono {
+  font-family: var(--font-mono);
+}
