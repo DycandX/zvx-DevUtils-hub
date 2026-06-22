@@ -255,7 +255,7 @@ export default function TerminalUI({
 
   return (
     <div
-      className="w-full glass-panel rounded-xl overflow-hidden border border-white/5 shadow-2xl flex flex-col h-[420px]"
+      className="w-full glass-panel rounded-xl overflow-hidden border border-white/5 shadow-2xl flex flex-col h-[520px]"
       onClick={focusInput}
     >
       {/* Terminal Title Bar */}
