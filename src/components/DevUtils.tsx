@@ -332,6 +332,7 @@ export default function DevUtils({ standalone }: { standalone?: boolean } = {}) 
           {/* Workspace Content Area */}
           <div className="flex-1 p-5 overflow-y-auto min-h-0 select-text workspace-content">
             <ToolRenderer
+              key={activeTool}
               toolId={activeTool}
               jsonInput={jsonInput}
               setJsonInput={setJsonInput}
