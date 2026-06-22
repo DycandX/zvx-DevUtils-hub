@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import NextLink from "next/link";
 import {
   Search, Sparkles, BookOpen, Code2, Split, Braces,
   KeyRound, Clock, Fingerprint, Layers, Hash, Calculator,
   Timer, FileSpreadsheet, FileCode, FileText, Database, Binary,
   ArrowLeftRight, Terminal, FileCode2, Shield, Key, FileImage,
   Sigma, Type, Image, RotateCw, Lock, Code,
-  Palette, ArrowUpDown, Link, Globe2, Maximize2, Minimize2
+  Palette, ArrowUpDown, Link, Globe2, ExternalLink
 } from "lucide-react";
 
 const GithubIcon = ({ size = 12, className = "" }: { size?: number; className?: string }) => (
@@ -28,51 +29,7 @@ const GithubIcon = ({ size = 12, className = "" }: { size?: number; className?: 
   </svg>
 );
 
-// Import modular utility components (our implementations)
-import MarkdownPreview from "./utils/MarkdownPreview";
-import HtmlPreview from "./utils/HtmlPreview";
-import NumberBaseConverter from "./utils/NumberBaseConverter";
-import DiffChecker from "./utils/DiffChecker";
-import JsonFormatter from "./utils/JsonFormatter";
-import JwtDecoder from "./utils/JwtDecoder";
-import TimestampConverter from "./utils/TimestampConverter";
-import UuidGenerator from "./utils/UuidGenerator";
-import Base64Transmuter from "./utils/Base64Transmuter";
-import HashGenerator from "./utils/HashGenerator";
-
-// Import modular utility components (from cloned repository)
-import CronJobParser from "./CronJobParser";
-import YamlToJson from "./YamlToJson";
-import YamlFormatter from "./YamlFormatter";
-import MakefileValidator from "./MakefileValidator";
-import SqlFormatter from "./SqlFormatter";
-import PhpSerializer from "./PhpSerializer";
-import PhpJsonConverter from "./PhpJsonConverter";
-import CurlToCode from "./CurlToCode";
-import CsvToJson from "./CsvToJson";
-import JsonToCsv from "./JsonToCsv";
-import JsonToCode from "./JsonToCode";
-import CertificateDecoder from "./CertificateDecoder";
-import CertificateGenerator from "./CertificateGenerator";
-import SvgToCss from "./SvgToCss";
-import HexAsciiConverter from "./HexAsciiConverter";
-import StringCaseConverter from "./StringCaseConverter";
-import Base64ImageEncoder from "./Base64ImageEncoder";
-import RegexpTester from "./RegexpTester";
-import HtmlEntityConverter from "./HtmlEntityConverter";
-import BackslashEncoder from "./BackslashEncoder";
-import LoremIpsum from "./LoremIpsum";
-import HtmlToJsx from "./HtmlToJsx";
-import CssMinifyBeautify from "./CssMinifyBeautify";
-import JavaScriptMinifyBeautify from "./JavaScriptMinifyBeautify";
-import HtmlMinifyBeautify from "./HtmlMinifyBeautify";
-import Base64SecretDecoder from "./k8s/Base64SecretDecoder";
-
-// Bonus tools
-import ColorConverter from "./ColorConverter";
-import LineSorter from "./LineSorter";
-import UrlEncoder from "./UrlEncoder";
-import UrlParser from "./UrlParser";
+import ToolRenderer from "./ToolRenderer";
 
 interface ToolItem {
   id: string;
@@ -140,23 +97,18 @@ export default function DevUtils() {
   const [searchQuery, setSearchQuery] = useState("");
   const [smartPasteText, setSmartPasteText] = useState("");
   const [detectedType, setDetectedType] = useState<string | null>(null);
-  const [fullscreen, setFullscreen] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const tool = params.get("tool");
-      const fs = params.get("fullscreen");
       if (tool && TOOLS_LIST.some(t => t.id === tool)) setActiveTool(tool);
-      if (fs === "true") setFullscreen(true);
     }
   }, []);
 
-  const updateUrl = useCallback((tool: string, fs: boolean) => {
+  const updateUrl = useCallback((tool: string) => {
     const url = new URL(window.location.href);
     url.searchParams.set("tool", tool);
-    if (fs) url.searchParams.set("fullscreen", "true");
-    else url.searchParams.delete("fullscreen");
     window.history.replaceState({}, "", url.toString());
   }, []);
 
@@ -174,14 +126,14 @@ export default function DevUtils() {
       const toolId = (e as CustomEvent).detail;
       if (toolId && TOOLS_LIST.some((t) => t.id === toolId)) {
         setActiveTool(toolId);
-        updateUrl(toolId, fullscreen);
+        updateUrl(toolId);
       }
     };
     window.addEventListener("select-dev-tool", handleSelectTool);
     return () => {
       window.removeEventListener("select-dev-tool", handleSelectTool);
     };
-  }, [fullscreen, updateUrl]);
+  }, [updateUrl]);
 
   // Handles pasting text into the universal input, auto-detecting the data shape,
   // populating the target tool's state, and switching active tab to it.
@@ -198,7 +150,7 @@ export default function DevUtils() {
     // 1. Detect JWT structure (header.payload.signature)
     const selectTool = (id: string) => {
       setActiveTool(id);
-      updateUrl(id, fullscreen);
+      updateUrl(id);
     };
     if (trimmed.startsWith("eyJ") && trimmed.split(".").length === 3) {
       setDetectedType("jwt");
@@ -241,13 +193,7 @@ export default function DevUtils() {
   );
 
   return (
-    <div id="utils" className={`w-full ${fullscreen ? "" : "space-y-6 scroll-mt-20"}`}>
-      {fullscreen && (
-        <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30"
-          onClick={() => setFullscreen(false)}
-        />
-      )}
+    <div id="utils" className="w-full space-y-6 scroll-mt-20">
       {/* Title Header */}
       <div>
         <div className="text-sm sm:text-base font-mono text-emerald-400 uppercase tracking-wider mb-1.5">
@@ -259,9 +205,7 @@ export default function DevUtils() {
       </div>
 
       {/* macOS Window App Container */}
-      <div className={`w-full rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row bg-zinc-950/65 backdrop-blur-md text-zinc-300 font-sans transition-all duration-300 ${
-        fullscreen ? "fixed inset-4 md:inset-6 z-40 h-auto" : "h-[700px]"
-      }`}>
+      <div className="w-full rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row h-[700px] bg-zinc-950/65 backdrop-blur-md text-zinc-300 font-sans">
         {/* Left Sidebar */}
         <div className="w-full md:w-72 bg-zinc-900/90 border-b md:border-b-0 md:border-r border-white/5 flex flex-col p-4 shrink-0 h-[250px] md:h-full">
           {/* macOS Dots at top-left (hidden on mobile) */}
@@ -291,7 +235,7 @@ export default function DevUtils() {
               return (
                 <button
                   key={tool.id}
-                  onClick={() => { setActiveTool(tool.id); updateUrl(tool.id, fullscreen); }}
+                  onClick={() => { setActiveTool(tool.id); updateUrl(tool.id); }}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-mono transition-all text-left cursor-pointer group ${
                     isActive
                       ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold"
@@ -335,13 +279,14 @@ export default function DevUtils() {
                   Smart Paste Switched: {detectedType.toUpperCase()}
                 </span>
               )}
-              <button
-                onClick={() => { const next = !fullscreen; setFullscreen(next); updateUrl(activeTool, next); }}
-                className="text-zinc-500 hover:text-zinc-200 transition-colors cursor-pointer"
-                aria-label={fullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+              <NextLink
+                href={`/tool/${activeTool}`}
+                className="text-zinc-500 hover:text-zinc-200 transition-colors"
+                aria-label="Open in full page"
+                target="_blank"
               >
-                {fullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-              </button>
+                <ExternalLink size={16} />
+              </NextLink>
             </div>
           </div>
 
@@ -373,58 +318,17 @@ export default function DevUtils() {
 
           {/* Workspace Content Area */}
           <div className="flex-1 p-5 overflow-y-auto min-h-0 select-text workspace-content">
-            {activeTool === "markdown" && <MarkdownPreview />}
-            {activeTool === "html" && <HtmlPreview />}
-            {activeTool === "number-base" && <NumberBaseConverter />}
-            {activeTool === "diff" && <DiffChecker />}
-            {activeTool === "json" && (
-              <JsonFormatter jsonInput={jsonInput} setJsonInput={setJsonInput} />
-            )}
-            {activeTool === "jwt" && (
-              <JwtDecoder jwtInput={jwtInput} setJwtInput={setJwtInput} />
-            )}
-            {activeTool === "timestamp" && (
-              <TimestampConverter timestampInput={timestampInput} setTimestampInput={setTimestampInput} />
-            )}
-            {activeTool === "uuid" && <UuidGenerator />}
-            {activeTool === "base64" && (
-              <Base64Transmuter base64Input={base64Input} setBase64Input={setBase64Input} />
-            )}
-            {activeTool === "hash" && <HashGenerator />}
-
-            {/* New components imported from cloned repo */}
-            {activeTool === "cron-parser" && <CronJobParser />}
-            {activeTool === "yaml-json" && <YamlToJson />}
-            {activeTool === "yaml-formatter" && <YamlFormatter />}
-            {activeTool === "makefile-validator" && <MakefileValidator />}
-            {activeTool === "sql-formatter" && <SqlFormatter />}
-            {activeTool === "php-serializer" && <PhpSerializer />}
-            {activeTool === "php-json" && <PhpJsonConverter />}
-            {activeTool === "curl-code" && <CurlToCode />}
-            {activeTool === "csv-json" && <CsvToJson />}
-            {activeTool === "json-csv" && <JsonToCsv />}
-            {activeTool === "json-code" && <JsonToCode />}
-            {activeTool === "cert-decoder" && <CertificateDecoder />}
-            {activeTool === "cert-generator" && <CertificateGenerator />}
-            {activeTool === "svg-css" && <SvgToCss />}
-            {activeTool === "hex-ascii" && <HexAsciiConverter />}
-            {activeTool === "string-case" && <StringCaseConverter />}
-            {activeTool === "base64-image" && <Base64ImageEncoder />}
-            {activeTool === "regexp" && <RegexpTester />}
-            {activeTool === "html-entity" && <HtmlEntityConverter />}
-            {activeTool === "backslash" && <BackslashEncoder />}
-            {activeTool === "lorem-ipsum" && <LoremIpsum />}
-            {activeTool === "html-jsx" && <HtmlToJsx />}
-            {activeTool === "css-minify-beautify" && <CssMinifyBeautify />}
-            {activeTool === "js-minify-beautify" && <JavaScriptMinifyBeautify />}
-            {activeTool === "html-minify-beautify" && <HtmlMinifyBeautify />}
-            {activeTool === "k8s-secret-decoder" && <Base64SecretDecoder />}
-
-            {/* Bonus tools */}
-            {activeTool === "color-converter" && <ColorConverter />}
-            {activeTool === "line-sorter" && <LineSorter />}
-            {activeTool === "url-encoder" && <UrlEncoder />}
-            {activeTool === "url-parser" && <UrlParser />}
+            <ToolRenderer
+              toolId={activeTool}
+              jsonInput={jsonInput}
+              setJsonInput={setJsonInput}
+              jwtInput={jwtInput}
+              setJwtInput={setJwtInput}
+              timestampInput={timestampInput}
+              setTimestampInput={setTimestampInput}
+              base64Input={base64Input}
+              setBase64Input={setBase64Input}
+            />
           </div>
         </div>
       </div>

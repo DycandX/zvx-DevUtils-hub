@@ -253,12 +253,11 @@ const PhpSerializer = () => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">PHP Serializer/Unserializer</h1>
         <div className="flex gap-2">
           <button
             type="button"
             onClick={loadSample}
-            className="flex items-center gap-2 px-3 py-2 text-sm bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-sm bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-zinc-300 rounded transition-colors"
             title="Load sample data to test the serializer"
           >
             <FileText size={16} />
@@ -267,7 +266,7 @@ const PhpSerializer = () => {
           <button
             type="button"
             onClick={swapContent}
-            className="flex items-center gap-2 px-3 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-sm bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-zinc-300 rounded transition-colors"
             title="Swap content between panels"
           >
             <ArrowLeftRight size={16} />
@@ -276,7 +275,7 @@ const PhpSerializer = () => {
           <button
             type="button"
             onClick={clearAll}
-            className="flex items-center gap-2 px-3 py-2 text-sm bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-sm bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded transition-colors"
             title="Clear all content"
           >
             <RotateCcw size={16} />
@@ -288,14 +287,14 @@ const PhpSerializer = () => {
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-zinc-300">
               JSON/Object
             </label>
             <div className="flex gap-1">
               <button
                 type="button"
                 onClick={formatJson}
-                className="px-2 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+                className="px-2 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-zinc-300 rounded transition-colors"
                 title="Format JSON"
               >
                 Format
@@ -303,7 +302,7 @@ const PhpSerializer = () => {
               <button
                 type="button"
                 onClick={minifyJson}
-                className="px-2 py-1 text-xs bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors"
+                className="px-2 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-zinc-300 rounded transition-colors"
                 title="Minify JSON"
               >
                 Minify
@@ -311,7 +310,7 @@ const PhpSerializer = () => {
               <button
                 type="button"
                 onClick={() => copyToClipboard(unserialized, 'JSON')}
-                className="px-2 py-1 text-xs bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+                className="px-2 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-zinc-300 rounded transition-colors"
                 title="Copy JSON"
               >
                 <Copy size={12} />
@@ -321,21 +320,21 @@ const PhpSerializer = () => {
           <textarea
             value={unserialized}
             onChange={(e) => handleSerialize(e.target.value)}
-            className="w-full h-[65vh] p-4 font-mono text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            className="w-full flex-1 bg-transparent p-4 font-mono text-sm text-zinc-200 resize-none border-none focus:ring-0 outline-none"
             placeholder='Enter JSON (e.g. {"foo": "bar", "numbers": [1, 2, 3], "nested": {"key": "value"}})'
           />
         </div>
         
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-zinc-300">
               PHP Serialized
             </label>
             <button
               type="button"
               onClick={() => copyToClipboard(serialized, 'PHP')}
-              className="px-2 py-1 text-xs bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
-              title="Copy PHP serialized string"
+className="px-2 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-zinc-300 rounded transition-colors"
+                title="Copy PHP serialized string"
             >
               <Copy size={12} />
             </button>
@@ -343,22 +342,22 @@ const PhpSerializer = () => {
           <textarea
             value={serialized}
             onChange={(e) => handleUnserialize(e.target.value)}
-            className="w-full h-[65vh] p-4 font-mono text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            className="w-full flex-1 bg-transparent p-4 font-mono text-sm text-zinc-200 resize-none border-none focus:ring-0 outline-none"
             placeholder='Enter PHP serialized string (e.g. a:1:{s:3:"foo";s:3:"bar";})'
           />
         </div>
       </div>
 
       {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-          <div className="text-sm text-red-800 font-medium">Error:</div>
-          <div className="text-sm text-red-600">{error}</div>
+        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400">
+          <div className="text-sm font-medium">Error:</div>
+          <div className="text-sm text-red-400">{error}</div>
         </div>
       )}
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h3 className="text-sm font-medium text-blue-800 mb-2">Features & Supported Types:</h3>
-        <div className="text-sm text-blue-700 space-y-1">
+      <div className="bg-zinc-900/40 border border-white/5 rounded-lg p-4">
+        <h3 className="text-sm font-medium text-zinc-300 mb-2">Features & Supported Types:</h3>
+        <div className="text-sm text-zinc-400 space-y-1">
           <p>• <strong>Bidirectional conversion:</strong> JSON ↔ PHP serialized format</p>
           <p>• <strong>Supported types:</strong> strings, integers, floats, booleans, null, arrays, objects</p>
           <p>• <strong>UTF-8 support:</strong> Correctly handles multi-byte characters</p>
@@ -367,14 +366,14 @@ const PhpSerializer = () => {
         </div>
       </div>
 
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-        <h3 className="text-sm font-medium text-gray-800 mb-2">Example Usage:</h3>
-        <div className="text-sm text-gray-600 space-y-2">
+      <div className="bg-zinc-900/40 border border-white/5 rounded-lg p-4">
+        <h3 className="text-sm font-medium text-zinc-300 mb-2">Example Usage:</h3>
+        <div className="text-sm text-zinc-400 space-y-2">
           <div>
-            <strong>JSON:</strong> <code className="bg-white px-2 py-1 rounded">{"{"}"name": "John", "age": 30, "active": true{"}"}</code>
+            <strong>JSON:</strong> <code className="bg-zinc-950/40 px-2 py-1 rounded">{"{"}"name": "John", "age": 30, "active": true{"}"}</code>
           </div>
           <div>
-            <strong>PHP:</strong> <code className="bg-white px-2 py-1 rounded">a:3:{"{"}s:4:"name";s:4:"John";s:3:"age";i:30;s:6:"active";b:1;{"}"}</code>
+            <strong>PHP:</strong> <code className="bg-zinc-950/40 px-2 py-1 rounded">a:3:{"{"}s:4:"name";s:4:"John";s:3:"age";i:30;s:6:"active";b:1;{"}"}</code>
           </div>
         </div>
       </div>

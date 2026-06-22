@@ -131,7 +131,7 @@ const SqlFormatter = () => {
   const renderFormattedSql = () => {
     if (!formattedSql) {
       return (
-        <div className="w-full h-[60vh] p-4 font-mono text-sm border rounded-lg bg-gray-50 flex items-center justify-center text-gray-400">
+        <div className="w-full h-[60vh] p-4 font-mono text-sm border border-white/10 rounded-lg bg-zinc-800/50 flex items-center justify-center text-zinc-500">
           Formatted SQL will appear here...
         </div>
       );
@@ -145,20 +145,20 @@ const SqlFormatter = () => {
         <textarea
           value={formattedSql}
           readOnly
-          className="w-full h-[60vh] p-4 font-mono text-sm border rounded-lg bg-gray-50 resize-none"
+          className="w-full h-[60vh] p-4 font-mono text-sm border border-white/10 rounded-lg bg-zinc-800/50 resize-none"
         />
       );
     }
 
     return (
-      <div className="w-full h-[60vh] border rounded-lg bg-gray-50 overflow-auto">
+      <div className="w-full h-[60vh] border border-white/10 rounded-lg bg-zinc-800/50 overflow-auto">
         <div className="flex">
           {/* Line numbers column */}
-          <div className="bg-gray-100 border-r border-gray-300 px-2 py-4 select-none">
+          <div className="bg-zinc-900/60 border-r border-white/5 px-2 py-4 select-none">
             {lines.map((_, index) => (
               <div
                 key={index}
-                className="font-mono text-xs text-gray-500 text-right leading-5"
+                className="font-mono text-xs text-zinc-500 text-right leading-5"
                 style={{ minWidth: `${maxLineNumberWidth * 0.6 + 0.5}rem` }}
               >
                 {index + 1}
@@ -198,13 +198,11 @@ const SqlFormatter = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">SQL Formatter</h1>
-        <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2">
           <select
             value={options.language}
             onChange={(e) => handleOptionChange("language", e.target.value)}
-            className="px-3 py-1 border rounded-md text-sm"
+            className="px-3 py-1 bg-zinc-800 border border-white/10 rounded-md text-sm text-zinc-300"
             title="Select SQL dialect"
             aria-label="SQL dialect selector"
           >
@@ -217,17 +215,16 @@ const SqlFormatter = () => {
           <button
             type="button"
             onClick={() => setShowSettings(!showSettings)}
-            className="p-2 border rounded-md hover:bg-gray-50"
+            className="p-2 border border-white/10 rounded-md hover:bg-zinc-700"
             title="Settings"
             aria-label="Toggle formatting settings"
           >
             <Settings size={16} />
           </button>
         </div>
-      </div>
 
       {showSettings && (
-        <div className="p-4 border rounded-lg bg-gray-50 space-y-4">
+        <div className="p-4 border border-white/10 rounded-lg bg-zinc-800/50 space-y-4">
           <h3 className="font-semibold">Formatting Options</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div>
@@ -239,7 +236,7 @@ const SqlFormatter = () => {
                 onChange={(e) =>
                   handleOptionChange("keywordCase", e.target.value)
                 }
-                className="w-full px-2 py-1 border rounded text-sm"
+                className="w-full px-2 py-1 bg-zinc-800 border border-white/10 rounded text-sm text-zinc-300"
               >
                 <option value="upper">UPPERCASE</option>
                 <option value="lower">lowercase</option>
@@ -255,7 +252,7 @@ const SqlFormatter = () => {
                 onChange={(e) =>
                   handleOptionChange("functionCase", e.target.value)
                 }
-                className="w-full px-2 py-1 border rounded text-sm"
+                className="w-full px-2 py-1 bg-zinc-800 border border-white/10 rounded text-sm text-zinc-300"
               >
                 <option value="upper">UPPERCASE</option>
                 <option value="lower">lowercase</option>
@@ -274,7 +271,7 @@ const SqlFormatter = () => {
                 onChange={(e) =>
                   handleOptionChange("tabWidth", parseInt(e.target.value))
                 }
-                className="w-full px-2 py-1 border rounded text-sm"
+                className="w-full px-2 py-1 bg-zinc-800 border border-white/10 rounded text-sm text-zinc-300"
               />
             </div>
             <div>
@@ -292,7 +289,7 @@ const SqlFormatter = () => {
                     parseInt(e.target.value)
                   )
                 }
-                className="w-full px-2 py-1 border rounded text-sm"
+                className="w-full px-2 py-1 bg-zinc-800 border border-white/10 rounded text-sm text-zinc-300"
               />
             </div>
             <div className="flex items-center">
@@ -342,13 +339,13 @@ const SqlFormatter = () => {
       )}
 
       <div className="flex flex-wrap gap-2 mb-4">
-        <span className="text-sm text-gray-600">Sample queries:</span>
+        <span className="text-sm text-zinc-400">Sample queries:</span>
         {sampleQueries.map((sample, index) => (
           <button
             key={index}
             type="button"
             onClick={() => handleInputChange(sample.query)}
-            className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200"
+            className="px-3 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded px-2 py-1 text-xs"
             title={`Load ${sample.name} sample query`}
           >
             {sample.name}
@@ -370,7 +367,7 @@ const SqlFormatter = () => {
               />
               <label
                 htmlFor="file-upload"
-                className="p-1 border rounded hover:bg-gray-50 cursor-pointer"
+                className="p-1 border border-white/10 rounded hover:bg-zinc-700 cursor-pointer"
                 title="Upload SQL file"
               >
                 <Upload size={14} />
@@ -378,7 +375,7 @@ const SqlFormatter = () => {
               <button
                 type="button"
                 onClick={clearAll}
-                className="p-1 border rounded hover:bg-gray-50"
+                className="p-1 border border-white/10 rounded hover:bg-zinc-700"
                 title="Clear all"
                 aria-label="Clear all content"
               >
@@ -389,7 +386,7 @@ const SqlFormatter = () => {
           <textarea
             value={sql}
             onChange={(e) => handleInputChange(e.target.value)}
-            className="w-full h-[60vh] p-4 font-mono text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            className="w-full h-[60vh] p-4 font-mono text-sm border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
             placeholder="Enter SQL query here..."
           />
         </div>
@@ -401,7 +398,7 @@ const SqlFormatter = () => {
               <button
                 type="button"
                 onClick={() => copyToClipboard(formattedSql)}
-                className="p-1 border rounded hover:bg-gray-50"
+                className="p-1 border border-white/10 rounded hover:bg-zinc-700"
                 title="Copy to clipboard"
                 aria-label="Copy formatted SQL to clipboard"
                 disabled={!formattedSql}
@@ -411,7 +408,7 @@ const SqlFormatter = () => {
               <button
                 type="button"
                 onClick={() => downloadSql(formattedSql, "formatted.sql")}
-                className="p-1 border rounded hover:bg-gray-50"
+                className="p-1 border border-white/10 rounded hover:bg-zinc-700"
                 title="Download SQL"
                 aria-label="Download formatted SQL as file"
                 disabled={!formattedSql}
@@ -422,14 +419,14 @@ const SqlFormatter = () => {
           </div>
           {renderFormattedSql()}
           {error && (
-            <div className="mt-2 p-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded">
+            <div className="mt-2 p-2 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded">
               {error}
             </div>
           )}
         </div>
       </div>
 
-      <div className="text-xs text-gray-500 space-y-1">
+      <div className="text-xs text-zinc-500 space-y-1">
         <p>
           • Supports multiple SQL dialects including MySQL, PostgreSQL, SQLite,
           and more
@@ -440,7 +437,7 @@ const SqlFormatter = () => {
 
       {/* Toast Notification */}
       {showToast && (
-        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 z-50">
+        <div className="fixed bottom-4 right-4 bg-zinc-800 border border-white/10 text-zinc-200 px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 z-50">
           <Copy size={16} />
           <span>Copied to clipboard!</span>
         </div>

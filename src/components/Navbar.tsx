@@ -93,6 +93,18 @@ export default function Navbar({ isAdmin, onAdminLogout }: { isAdmin: boolean; o
           </Link>
         </div>
 
+        {/* Creator Credit */}
+        <div className="hidden md:block">
+          <a
+            href="https://zulvikar.is-a.dev"
+            target="_blank"
+            rel="noreferrer"
+            className="text-[10px] font-mono text-zinc-600 hover:text-emerald-400 transition-colors"
+          >
+            dev by zulvikar.is-a.dev
+          </a>
+        </div>
+
         {/* Operational Status & Actions */}
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-white/5 text-xs font-mono">

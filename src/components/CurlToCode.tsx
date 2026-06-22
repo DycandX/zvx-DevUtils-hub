@@ -510,7 +510,7 @@ export default function CurlToCode() {
 
   return (
     <div className="max-w-4xl">
-      <h2 className="text-2xl font-bold mb-6">cURL to Code Converter</h2>
+
       <div className="space-y-6">
         <div className="flex flex-wrap gap-4 items-center">
           <select
@@ -522,7 +522,7 @@ export default function CurlToCode() {
                 convertCode(curl, newLang);
               }
             }}
-            className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="bg-zinc-800 border border-white/5 text-zinc-300 rounded px-2 py-1 text-xs"
             title="Select output language"
           >
             <option value="python">Python (requests)</option>
@@ -537,14 +537,14 @@ export default function CurlToCode() {
           </select>
           
           <div className="flex items-center gap-2">
-            <FileText size={16} className="text-gray-500" />
-            <span className="text-sm text-gray-600">Load Example:</span>
+            <FileText size={16} className="text-zinc-500" />
+            <span className="text-sm text-zinc-400">Load Example:</span>
             {examples.map((example, index) => (
               <button
                 key={index}
                 type="button"
                 onClick={() => loadExample(example.curl)}
-                className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+                className="px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-zinc-300 text-xs transition-colors"
                 title={`Load ${example.name} example`}
               >
                 {example.name}
@@ -554,7 +554,7 @@ export default function CurlToCode() {
         </div>
         <div className="grid grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">cURL Command</label>
+            <label className="block text-sm font-medium text-zinc-300">cURL Command</label>
             <CodeEditor
               value={curl}
               language="shell"
@@ -562,7 +562,7 @@ export default function CurlToCode() {
               onChange={(e) => setCurl(e.target.value)}
               padding={15}
               data-color-mode="dark"
-              className="h-[500px] font-mono text-sm border border-gray-300 rounded-md"
+              className="h-[500px] font-mono text-sm rounded-md"
               style={{
                 backgroundColor: '#1e1e1e',
                 color: '#d4d4d4',
@@ -574,7 +574,7 @@ export default function CurlToCode() {
           </div>
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <label className="block text-sm font-medium text-gray-700">Code Output</label>
+              <label className="block text-sm font-medium text-zinc-300">Code Output</label>
               <div className="flex items-center gap-2">
                 {/* Line Numbers Toggle */}
                 <button
@@ -582,8 +582,8 @@ export default function CurlToCode() {
                   onClick={() => setShowLineNumbers(!showLineNumbers)}
                   className={`flex items-center gap-1 px-2 py-1 text-xs rounded-md transition-colors ${
                     showLineNumbers 
-                      ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-emerald-500 text-zinc-950' 
+                      : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
                   }`}
                   title="Toggle line numbers"
                 >
@@ -597,8 +597,8 @@ export default function CurlToCode() {
                   onClick={() => setWrapLines(!wrapLines)}
                   className={`flex items-center gap-1 px-2 py-1 text-xs rounded-md transition-colors ${
                     wrapLines 
-                      ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-emerald-500 text-zinc-950' 
+                      : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
                   }`}
                   title="Toggle line wrap"
                 >
@@ -611,7 +611,7 @@ export default function CurlToCode() {
                   <button
                     type="button"
                     onClick={copyToClipboard}
-                    className="flex items-center gap-2 px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+                    className="flex items-center gap-2 px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 border border-white/5 text-zinc-300 text-xs transition-colors"
                     title="Copy to clipboard"
                   >
                     <Copy size={14} />
@@ -622,7 +622,7 @@ export default function CurlToCode() {
             </div>
             <div className="relative">
               <div 
-                className="h-[500px] border border-gray-300 rounded-md overflow-auto"
+                className="h-[500px] rounded-md overflow-auto"
                 style={{
                   backgroundColor: '#1e1e1e',
                   fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
@@ -669,9 +669,9 @@ export default function CurlToCode() {
               
               {isConverting && (
                 <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center rounded-md">
-                  <div className="bg-white px-3 py-2 rounded-md shadow-lg flex items-center gap-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-500 border-t-transparent"></div>
-                    <span className="text-sm text-gray-700">Converting...</span>
+                  <div className="bg-zinc-950/40 px-3 py-2 rounded-md shadow-lg flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-emerald-500 border-t-transparent"></div>
+                    <span className="text-sm text-zinc-300">Converting...</span>
                   </div>
                 </div>
               )}
@@ -685,7 +685,7 @@ export default function CurlToCode() {
             type="button"
             onClick={handleManualConvert}
             disabled={!curl.trim() || isConverting}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Play size={16} />
             {isConverting ? 'Converting...' : 'Convert to Code'}
@@ -694,11 +694,11 @@ export default function CurlToCode() {
         
         {/* Error Display */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-md p-4 flex items-start gap-3">
+          <div className="bg-red-500/10 border border-red-500/20 rounded-md p-4 flex items-start gap-3">
             <AlertCircle size={20} className="text-red-500 flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="text-red-800 font-medium">Conversion Error</h4>
-              <p className="text-red-700 text-sm mt-1">{error}</p>
+              <h4 className="text-red-400 font-medium">Conversion Error</h4>
+              <p className="text-red-400 text-sm mt-1">{error}</p>
             </div>
           </div>
         )}
@@ -706,7 +706,7 @@ export default function CurlToCode() {
 
       {/* Toast Notification */}
       {showToast && (
-        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 z-50">
+        <div className="fixed bottom-4 right-4 bg-zinc-800 border border-white/10 text-zinc-200 px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 z-50">
           <Copy size={16} />
           <span>Copied to clipboard!</span>
         </div>
