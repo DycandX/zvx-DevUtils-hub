@@ -92,7 +92,7 @@ const TOOLS_LIST: ToolItem[] = [
  * Orchestrates individual developer tools in a macOS-styled window wrapper.
  * Integrates the smart paste auto-detector globally.
  */
-export default function DevUtils() {
+export default function DevUtils({ standalone }: { standalone?: boolean } = {}) {
   const [activeTool, setActiveTool] = useState("markdown");
   const [searchQuery, setSearchQuery] = useState("");
   const [smartPasteText, setSmartPasteText] = useState("");
@@ -193,19 +193,23 @@ export default function DevUtils() {
   );
 
   return (
-    <div id="utils" className="w-full space-y-6 scroll-mt-20">
-      {/* Title Header */}
-      <div>
-        <div className="text-sm sm:text-base font-mono text-emerald-400 uppercase tracking-wider mb-1.5">
-          &gt; developer_utilities
+    <div id="utils" className={`w-full ${standalone ? "flex-1 flex flex-col min-h-0" : "space-y-6 scroll-mt-20"}`}>
+      {/* Title Header — hidden in standalone mode */}
+      {!standalone && (
+        <div>
+          <div className="text-sm sm:text-base font-mono text-emerald-400 uppercase tracking-wider mb-1.5">
+            &gt; developer_utilities
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold font-mono tracking-tight text-zinc-100">
+            Dev Utils Hub
+          </h2>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-bold font-mono tracking-tight text-zinc-100">
-          Dev Utils Hub
-        </h2>
-      </div>
+      )}
 
       {/* macOS Window App Container */}
-      <div className="w-full rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row h-[700px] bg-zinc-950/65 backdrop-blur-md text-zinc-300 font-sans">
+      <div className={`w-full rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row bg-zinc-950/65 backdrop-blur-md text-zinc-300 font-sans min-h-0 ${
+        standalone ? "flex-1" : "h-[700px]"
+      }`}>
         {/* Left Sidebar */}
         <div className="w-full md:w-72 bg-zinc-900/90 border-b md:border-b-0 md:border-r border-white/5 flex flex-col p-4 shrink-0 h-[250px] md:h-full">
           {/* macOS Dots at top-left (hidden on mobile) */}
@@ -236,10 +240,11 @@ export default function DevUtils() {
                 <button
                   key={tool.id}
                   onClick={() => { setActiveTool(tool.id); updateUrl(tool.id); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-mono transition-all text-left cursor-pointer group ${
+                  aria-current={isActive ? "true" : undefined}
+                  className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-mono transition-all text-left cursor-pointer group ${
                     isActive
                       ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold"
-                      : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 border border-transparent"
+                      : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 border border-transparent focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   }`}
                 >
                   <IconComponent size={16} className={isActive ? "text-emerald-400" : "text-zinc-500 group-hover:text-zinc-400"} />
@@ -258,7 +263,7 @@ export default function DevUtils() {
               href="https://github.com/DycandX/zvx-DevUtils-hub"
               target="_blank"
               rel="noreferrer"
-              className="w-full py-2 rounded bg-zinc-850 hover:bg-zinc-800 border border-white/5 text-zinc-300 hover:text-zinc-100 transition-all font-mono text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer text-center"
+              className="w-full py-2.5 rounded bg-zinc-850 hover:bg-zinc-800 border border-white/5 text-zinc-300 hover:text-zinc-100 transition-all font-mono text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer text-center focus-visible:ring-2 focus-visible:ring-emerald-500/50"
             >
               <GithubIcon size={13} className="text-zinc-400" />
               GitHub Repository
@@ -274,26 +279,33 @@ export default function DevUtils() {
               Workspace // {TOOLS_LIST.find((t) => t.id === activeTool)?.name}
             </span>
             <div className="flex items-center gap-3">
-              {detectedType && (
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold animate-pulse">
+              {detectedType && !standalone && (
+                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold motion-safe:animate-pulse">
                   Smart Paste Switched: {detectedType.toUpperCase()}
                 </span>
               )}
-              <NextLink
-                href={`/tool/${activeTool}`}
-                className="text-zinc-500 hover:text-zinc-200 transition-colors"
-                aria-label="Open in full page"
-                target="_blank"
-              >
-                <ExternalLink size={16} />
-              </NextLink>
+              {standalone ? (
+                <NextLink href="/" className="text-xs font-mono text-zinc-500 hover:text-emerald-400 transition-colors" aria-label="Back to home">
+                  &larr; Back to Hub
+                </NextLink>
+              ) : (
+                <NextLink
+                  href={`/tool/${activeTool}`}
+                  className="text-zinc-500 hover:text-zinc-200 transition-colors"
+                  aria-label="Open in full page"
+                  target="_blank"
+                >
+                  <ExternalLink size={16} />
+                </NextLink>
+              )}
             </div>
           </div>
 
-          {/* Universal Smart Paste Bar */}
+          {/* Universal Smart Paste Bar — hidden in standalone mode */}
+          {!standalone && (
           <div className="px-5 py-2.5 bg-zinc-950/30 border-b border-white/5 flex items-center gap-3">
             <div className="flex items-center gap-1 text-xs font-mono text-emerald-400 font-bold shrink-0 uppercase tracking-wider">
-              <Sparkles size={12} className="animate-pulse" />
+              <Sparkles size={12} className="motion-safe:animate-pulse" />
               Smart Paste
             </div>
             <input
@@ -315,6 +327,7 @@ export default function DevUtils() {
               </button>
             )}
           </div>
+          )}
 
           {/* Workspace Content Area */}
           <div className="flex-1 p-5 overflow-y-auto min-h-0 select-text workspace-content">

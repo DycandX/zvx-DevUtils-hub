@@ -1,9 +1,7 @@
 "use client";
 
 import { useParams, notFound } from "next/navigation";
-import Link from "next/link";
-import ToolRenderer from "@/components/ToolRenderer";
-import { ArrowLeft } from "lucide-react";
+import DevUtils from "@/components/DevUtils";
 
 const VALID_TOOLS = [
   "markdown", "html", "number-base", "diff", "json", "jwt", "timestamp", "uuid", "base64", "hash",
@@ -23,23 +21,5 @@ export default function ToolPage() {
     notFound();
   }
 
-  return (
-    <div className="flex-1 flex flex-col min-h-0">
-      <div className="flex items-center justify-between px-5 py-3 bg-zinc-900/50 border-b border-white/5 shrink-0">
-        <Link
-          href={`/?tool=${toolId}`}
-          className="inline-flex items-center gap-2 text-xs font-mono text-zinc-500 hover:text-emerald-400 transition-colors"
-        >
-          <ArrowLeft size={14} />
-          Back to Hub
-        </Link>
-        <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-wider">
-          zvx-hub // {toolId}
-        </span>
-      </div>
-      <div className="flex-1 p-5 overflow-y-auto workspace-content">
-        <ToolRenderer toolId={toolId} />
-      </div>
-    </div>
-  );
+  return <DevUtils standalone />;
 }
