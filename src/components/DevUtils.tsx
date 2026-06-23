@@ -102,7 +102,9 @@ export default function DevUtils({ standalone }: { standalone?: boolean } = {}) 
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const tool = params.get("tool");
-      if (tool && TOOLS_LIST.some(t => t.id === tool)) setActiveTool(tool);
+      if (tool && TOOLS_LIST.some(t => t.id === tool)) {
+        setTimeout(() => setActiveTool(tool), 0);
+      }
     }
   }, []);
 

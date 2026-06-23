@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import CodeEditor from '@uiw/react-textarea-code-editor';
-import { processCss } from '../utils/cssProcessor';
+import { processCss } from '../../utils/cssProcessor';
 
 export default function CssMinifyBeautify() {
   const [css, setCss] = useState('');
